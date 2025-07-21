@@ -23,7 +23,7 @@ Aplicación web para el control de gastos y presupuestos personales. Permite reg
 
 1. Clona el repositorio:
 ```bash
-git clone https://github.com/TU_USUARIO/finanzas-bry.git
+git clone https://github.com/brycurts/finanzas-bry.git
 ```
 
 2. Abre el archivo `index.html` en tu navegador o usa un servidor local:
@@ -36,6 +36,8 @@ npx serve
 ```
 
 3. La aplicación estará disponible en `http://localhost:8000`
+
+También puedes acceder a la versión en línea en: https://brycurts.github.io/finanzas-bry
 
 ## Estructura del Proyecto
 
@@ -79,6 +81,6 @@ Distribuido bajo la Licencia MIT. Ver `LICENSE` para más información.
 
 ## Contacto
 
-Tu Nombre - [@tu_twitter](https://twitter.com/tu_twitter)
+Bryan Curtis - [@brycurts](https://github.com/brycurts)
 
-Link del proyecto: [https://github.com/TU_USUARIO/finanzas-bry](https://github.com/TU_USUARIO/finanzas-bry) 
+Link del proyecto: [https://github.com/brycurts/finanzas-bry](https://github.com/brycurts/finanzas-bry) 
