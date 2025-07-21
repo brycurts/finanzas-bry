@@ -3,87 +3,172 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Aplicación de gestión de finanzas personales para el control de gastos y presupuestos">
+    <meta name="description" content="Control de gastos y presupuestos personales - Gestiona tus finanzas de manera fácil y efectiva">
     <meta name="theme-color" content="#5D29FF">
-    <meta name="robots" content="index, follow">
-    <title>Finanzas Bry - Control de Gastos y Presupuestos</title>
+    <title>Finanzas Bry</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Cascadia+Code:wght@400;700&display=swap" rel="stylesheet">
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="favicon.png">
 </head>
 <body>
-    <header class="main-header" role="banner">
+    <header class="main-header">
         <h1>Finanzas Bry</h1>
-        <nav role="navigation" aria-label="Navegación principal">
-            <button id="btnInicio" class="nav-button active" data-section="main" aria-pressed="true">Inicio</button>
-            <button id="btnHistorial" class="nav-button" data-section="history" aria-pressed="false">Historial</button>
-            <button id="btnPresupuesto" class="nav-button" data-section="budget" aria-pressed="false">Presupuesto</button>
+        <nav>
+            <button id="btnInicio" class="nav-button active" data-section="main" aria-pressed="true">
+                <span class="material-icons">dashboard</span>
+                <span>Inicio</span>
+            </button>
+            <button id="btnHistorial" class="nav-button" data-section="history" aria-pressed="false">
+                <span class="material-icons">history</span>
+                <span>Historial</span>
+            </button>
+            <button id="btnPresupuesto" class="nav-button" data-section="budget" aria-pressed="false">
+                <span class="material-icons">account_balance_wallet</span>
+                <span>Presupuesto</span>
+            </button>
         </nav>
     </header>
 
-    <main id="mainSection" role="main">
+    <main id="mainSection">
         <!-- Formulario de Gastos -->
         <section class="form-section">
-            <form id="gastoForm">
+            <div class="section-header">
+                <h2 class="section-title">Registro de Gastos</h2>
+                <p class="section-description">Ingresa los detalles de tu gasto</p>
+            </div>
+            
+            <form id="gastoForm" class="expense-form">
                 <div class="form-grid">
-                    <div class="form-field">
-                        <label>¿En qué gastaste?</label>
-                        <input type="text" id="descripcion" placeholder="Descripción del gasto" required>
-                    </div>
-                    <div class="form-field">
-                        <label>Monto</label>
-                        <div class="input-with-icon">
-                            <span class="currency-symbol">Bs</span>
-                            <input type="number" id="monto" placeholder="0.00" step="0.01" min="0" required>
+                    <!-- Descripción -->
+                    <div class="form-group">
+                        <div class="form-field">
+                            <label for="descripcion">Descripción</label>
+                            <div class="input-wrapper">
+                                <span class="material-icons input-icon">description</span>
+                                <input type="text" 
+                                       id="descripcion" 
+                                       name="descripcion"
+                                       placeholder="¿En qué gastaste?" 
+                                       required
+                                       maxlength="50"
+                                       autocomplete="off"
+                                       class="form-input">
+                            </div>
+                            <small class="form-help">Máximo 50 caracteres</small>
                         </div>
                     </div>
-                    <div class="form-field">
-                        <label>Tipo de Gasto</label>
-                        <button type="button" class="category-trigger" id="categoryTrigger">
-                            <span class="selected-category">Seleccionar categoría</span>
-                            <span class="material-icons">expand_more</span>
-                        </button>
-                        <div class="category-selector" id="categorySelector">
-                            <div class="category-list" id="categoryList"></div>
-                            <div class="add-category">
-                                <input type="text" id="newCategory" placeholder="Nueva categoría">
-                                <button type="button" id="addCategoryBtn">
-                                    <span class="material-icons">add</span>
+
+                    <!-- Monto -->
+                    <div class="form-group">
+                        <div class="form-field">
+                            <label for="monto">Monto</label>
+                            <div class="input-with-icon">
+                                <span class="currency-symbol">Bs</span>
+                                <input type="number" 
+                                       id="monto" 
+                                       name="monto"
+                                       placeholder="0.00" 
+                                       step="0.01" 
+                                       min="0.01"
+                                       max="1000000" 
+                                       required
+                                       class="form-input">
+                            </div>
+                            <small class="form-help">Monto máximo: 1,000,000 Bs</small>
+                        </div>
+                    </div>
+
+                    <!-- Categoría -->
+                    <div class="form-group">
+                        <div class="form-field">
+                            <label for="categoria">Categoría</label>
+                            <div class="category-wrapper">
+                                <button type="button" 
+                                        id="categoryTrigger"
+                                        class="category-trigger" 
+                                        aria-haspopup="true"
+                                        aria-expanded="false"
+                                        aria-controls="categorySelector">
+                                    <span class="selected-category">Seleccionar categoría</span>
+                                    <span class="material-icons">expand_more</span>
                                 </button>
+                                <div class="category-selector" 
+                                     id="categorySelector" 
+                                     role="listbox"
+                                     aria-labelledby="categoryTrigger">
+                                    <div class="category-list" id="categoryList"></div>
+                                    <div class="category-divider"></div>
+                                    <div class="add-category">
+                                        <div class="input-wrapper">
+                                            <input type="text" 
+                                                   id="newCategory" 
+                                                   placeholder="Nueva categoría"
+                                                   maxlength="20"
+                                                   aria-label="Agregar nueva categoría"
+                                                   class="form-input">
+                                            <button type="button" 
+                                                    id="addCategoryBtn"
+                                                    class="btn-icon"
+                                                    aria-label="Agregar categoría">
+                                                <span class="material-icons">add</span>
+                                            </button>
+                                        </div>
+                                        <small class="form-help">Máximo 20 caracteres</small>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="form-field">
-                        <label>Fecha</label>
-                        <input type="date" id="fecha" required>
+
+                    <!-- Fecha -->
+                    <div class="form-group">
+                        <div class="form-field">
+                            <label for="fecha">Fecha</label>
+                            <div class="input-wrapper">
+                                <span class="material-icons input-icon">calendar_today</span>
+                                <input type="date" 
+                                       id="fecha" 
+                                       name="fecha"
+                                       required
+                                       class="form-input">
+                            </div>
+                            <small class="form-help">Selecciona la fecha del gasto</small>
+                        </div>
                     </div>
                 </div>
-                <button type="submit" class="btn-primary">
-                    <span class="material-icons">lock</span> Guardar
-                </button>
+
+                <div class="form-actions">
+                    <button type="reset" class="btn-secondary">
+                        <span class="material-icons">refresh</span>
+                        <span>Limpiar</span>
+                    </button>
+                    <button type="submit" class="btn-primary">
+                        <span class="material-icons">save</span>
+                        <span>Guardar Gasto</span>
+                    </button>
+                </div>
             </form>
         </section>
 
         <!-- Resumen de Gastos -->
         <section class="summary-section">
+            <h2 class="section-title">Resumen de Gastos</h2>
             <div class="summary-cards">
                 <div class="summary-card">
                     <span class="material-icons card-icon">calendar_month</span>
                     <h3>Este Mes</h3>
-                    <p id="totalMes">$0.00</p>
+                    <p id="totalMes" aria-label="Total del mes">Bs 0.00</p>
                 </div>
                 <div class="summary-card">
                     <span class="material-icons card-icon">date_range</span>
                     <h3>Esta Semana</h3>
-                    <p id="totalSemana">$0.00</p>
+                    <p id="totalSemana" aria-label="Total de la semana">Bs 0.00</p>
                 </div>
                 <div class="summary-card">
                     <span class="material-icons card-icon">today</span>
                     <h3>Hoy</h3>
-                    <p id="totalDia">$0.00</p>
+                    <p id="totalDia" aria-label="Total del día">Bs 0.00</p>
                 </div>
             </div>
         </section>
@@ -91,8 +176,8 @@
         <!-- Resumen de Presupuesto -->
         <section class="budget-overview">
             <div class="budget-header">
-                <h2>Resumen Financiero</h2>
-                <span class="period-label">Período actual: Marzo 2024</span>
+                <h2 class="section-title">Resumen Financiero</h2>
+                <span class="period-label"></span>
             </div>
             <div class="budget-container">
                 <div class="budget-card main-budget">
@@ -101,7 +186,7 @@
                             <span class="material-icons">account_balance</span>
                             <h3>Presupuesto Total</h3>
                         </div>
-                        <p id="totalPresupuesto">$0.00</p>
+                        <p id="totalPresupuesto" aria-label="Presupuesto total">Bs 0.00</p>
                     </div>
                 </div>
 
@@ -111,7 +196,7 @@
                             <span class="material-icons">trending_down</span>
                             <h4>Gastado</h4>
                         </div>
-                        <p id="gastoMensual">$0.00</p>
+                        <p id="gastoMensual" aria-label="Gasto mensual">Bs 0.00</p>
                     </div>
 
                     <div class="metric-card">
@@ -119,7 +204,7 @@
                             <span class="material-icons">account_balance_wallet</span>
                             <h4>Disponible</h4>
                         </div>
-                        <p id="saldoRestante">$0.00</p>
+                        <p id="saldoRestante" aria-label="Saldo restante">Bs 0.00</p>
                     </div>
 
                     <div class="metric-card">
@@ -127,16 +212,20 @@
                             <span class="material-icons">pie_chart</span>
                             <h4>Utilizado</h4>
                         </div>
-                        <p id="porcentajeGastado">0%</p>
+                        <p id="porcentajeGastado" aria-label="Porcentaje gastado">0%</p>
                     </div>
                 </div>
 
                 <div class="progress-container">
                     <div class="progress-info">
                         <span>Progreso del mes</span>
-                        <span id="progressLabel">0 de $0.00</span>
+                        <span id="progressLabel">0 de Bs 0.00</span>
                     </div>
-                    <div class="progress-bar">
+                    <div class="progress-bar" 
+                         role="progressbar" 
+                         aria-valuenow="0" 
+                         aria-valuemin="0" 
+                         aria-valuemax="100">
                         <div class="progress" id="progressGastos"></div>
                     </div>
                 </div>
@@ -145,17 +234,26 @@
     </main>
 
     <!-- Sección de Historial -->
-    <div id="historySection" class="hidden">
+    <div id="historySection" class="hidden" role="region" aria-label="Historial de gastos">
         <section class="history-controls">
+            <h2 class="section-title">Historial de Gastos</h2>
             <div class="history-navigation">
-                <button id="prevDate" class="nav-arrow">
+                <button id="prevDate" 
+                        class="nav-arrow"
+                        aria-label="Día anterior">
                     <span class="material-icons">chevron_left</span>
                 </button>
                 <div class="date-selector">
-                    <button id="currentDate" class="date-button"></button>
-                    <input type="date" id="historyDate">
+                    <button id="currentDate" 
+                            class="date-button"
+                            aria-label="Fecha actual"></button>
+                    <input type="date" 
+                           id="historyDate" 
+                           aria-label="Seleccionar fecha">
                 </div>
-                <button id="nextDate" class="nav-arrow">
+                <button id="nextDate" 
+                        class="nav-arrow"
+                        aria-label="Día siguiente">
                     <span class="material-icons">chevron_right</span>
                 </button>
             </div>
@@ -164,47 +262,123 @@
         <section class="history-details">
             <div class="table-container">
                 <table id="historyTable">
+                    <caption class="sr-only">Gastos del día</caption>
                     <thead>
                         <tr>
-                            <th>Descripción</th>
-                            <th>Categoría</th>
-                            <th>Monto</th>
+                            <th scope="col">Descripción</th>
+                            <th scope="col">Categoría</th>
+                            <th scope="col">Monto</th>
+                            <th scope="col">Acciones</th>
                         </tr>
                     </thead>
                     <tbody id="historyTableBody"></tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="2">Total del día:</td>
+                            <td id="totalDiaHistorial">Bs 0.00</td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
                 </table>
             </div>
         </section>
     </div>
 
     <!-- Sección de Presupuestos -->
-    <div id="budgetSection" class="hidden">
+    <div id="budgetSection" class="hidden" role="region" aria-label="Configuración de presupuestos">
         <section class="budget-section">
-            <h2>Configurar Presupuestos</h2>
+            <h2 class="section-title">Configurar Presupuestos</h2>
             <form id="budgetForm" class="budget-form">
                 <div class="form-field">
-                    <label>Presupuesto Mensual Total</label>
+                    <label for="presupuestoTotal">Presupuesto Mensual Total</label>
                     <div class="input-with-icon">
                         <span class="currency-symbol">Bs</span>
-                        <input type="number" id="presupuestoTotal" placeholder="0.00" step="0.01" min="0" required>
+                        <input type="number" 
+                               id="presupuestoTotal" 
+                               name="presupuestoTotal"
+                               placeholder="0.00" 
+                               step="0.01" 
+                               min="0"
+                               max="1000000" 
+                               required>
                     </div>
                 </div>
                 <div id="categoryBudgets" class="category-budgets">
                     <!-- Los presupuestos por categoría se cargarán dinámicamente -->
                 </div>
                 <button type="submit" class="btn-primary">
-                    <span class="material-icons">save</span> Guardar Presupuestos
+                    <span class="material-icons">save</span>
+                    <span>Guardar Presupuestos</span>
                 </button>
             </form>
         </section>
     </div>
+
+    <!-- Sección de Exportación y Acciones -->
+    <section class="export-section">
+        <div class="action-buttons">
+            <button id="clearDayButton" 
+                    class="clear-button" 
+                    aria-label="Limpiar todos los datos"
+                    type="button">
+                <span class="material-icons">delete_forever</span>
+                <span>Limpiar Todos los Datos</span>
+            </button>
+            <button id="exportButton" 
+                    class="export-button" 
+                    aria-label="Exportar a PDF"
+                    type="button">
+                <span class="material-icons">picture_as_pdf</span>
+                <span>Exportar a PDF</span>
+            </button>
+        </div>
+    </section>
+
+    <!-- Modal de Confirmación -->
+    <div id="confirmModal" 
+         class="modal-overlay" 
+         role="dialog" 
+         aria-labelledby="modal-title" 
+         aria-modal="true"
+         hidden>
+        <div class="modal-content">
+            <h3 id="modal-title" class="modal-title">¿Limpiar todos los datos?</h3>
+            <p class="modal-message">Esta acción eliminará TODOS los gastos y presupuestos registrados. Esta acción no se puede deshacer.</p>
+            <div class="modal-buttons">
+                <button class="modal-button cancel" 
+                        id="cancelClear"
+                        type="button">Cancelar</button>
+                <button class="modal-button confirm" 
+                        id="confirmClear"
+                        type="button">Sí, eliminar todo</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Estilos para lectores de pantalla -->
+    <style>
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+    </style>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.29/jspdf.plugin.autotable.min.js"></script>
+    <script src="script.js"></script>
 
     <noscript>
         <div class="error-message">
             Esta aplicación requiere JavaScript para funcionar. Por favor, habilítalo en tu navegador.
         </div>
     </noscript>
-
-    <script src="script.js" defer></script>
 </body>
 </html> 
