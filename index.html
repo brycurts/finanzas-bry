@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Aplicación de gestión de finanzas personales para el control de gastos y presupuestos">
+    <meta name="theme-color" content="#5D29FF">
+    <meta name="robots" content="index, follow">
+    <title>Finanzas Bry - Control de Gastos y Presupuestos</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cascadia+Code:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="favicon.png">
+</head>
+<body>
+    <header class="main-header" role="banner">
+        <h1>Finanzas Bry</h1>
+        <nav role="navigation" aria-label="Navegación principal">
+            <button id="btnInicio" class="nav-button active" data-section="main" aria-pressed="true">Inicio</button>
+            <button id="btnHistorial" class="nav-button" data-section="history" aria-pressed="false">Historial</button>
+            <button id="btnPresupuesto" class="nav-button" data-section="budget" aria-pressed="false">Presupuesto</button>
+        </nav>
+    </header>
+
+    <main id="mainSection" role="main">
+        <!-- Formulario de Gastos -->
+        <section class="form-section">
+            <form id="gastoForm">
+                <div class="form-grid">
+                    <div class="form-field">
+                        <label>¿En qué gastaste?</label>
+                        <input type="text" id="descripcion" placeholder="Descripción del gasto" required>
+                    </div>
+                    <div class="form-field">
+                        <label>Monto</label>
+                        <div class="input-with-icon">
+                            <span class="currency-symbol">Bs</span>
+                            <input type="number" id="monto" placeholder="0.00" step="0.01" min="0" required>
+                        </div>
+                    </div>
+                    <div class="form-field">
+                        <label>Tipo de Gasto</label>
+                        <button type="button" class="category-trigger" id="categoryTrigger">
+                            <span class="selected-category">Seleccionar categoría</span>
+                            <span class="material-icons">expand_more</span>
+                        </button>
+                        <div class="category-selector" id="categorySelector">
+                            <div class="category-list" id="categoryList"></div>
+                            <div class="add-category">
+                                <input type="text" id="newCategory" placeholder="Nueva categoría">
+                                <button type="button" id="addCategoryBtn">
+                                    <span class="material-icons">add</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-field">
+                        <label>Fecha</label>
+                        <input type="date" id="fecha" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn-primary">
+                    <span class="material-icons">lock</span> Guardar
+                </button>
+            </form>
+        </section>
+
+        <!-- Resumen de Gastos -->
+        <section class="summary-section">
+            <div class="summary-cards">
+                <div class="summary-card">
+                    <span class="material-icons card-icon">calendar_month</span>
+                    <h3>Este Mes</h3>
+                    <p id="totalMes">$0.00</p>
+                </div>
+                <div class="summary-card">
+                    <span class="material-icons card-icon">date_range</span>
+                    <h3>Esta Semana</h3>
+                    <p id="totalSemana">$0.00</p>
+                </div>
+                <div class="summary-card">
+                    <span class="material-icons card-icon">today</span>
+                    <h3>Hoy</h3>
+                    <p id="totalDia">$0.00</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Resumen de Presupuesto -->
+        <section class="budget-overview">
+            <div class="budget-header">
+                <h2>Resumen Financiero</h2>
+                <span class="period-label">Período actual: Marzo 2024</span>
+            </div>
+            <div class="budget-container">
+                <div class="budget-card main-budget">
+                    <div class="budget-info">
+                        <div class="budget-title">
+                            <span class="material-icons">account_balance</span>
+                            <h3>Presupuesto Total</h3>
+                        </div>
+                        <p id="totalPresupuesto">$0.00</p>
+                    </div>
+                </div>
+
+                <div class="budget-metrics">
+                    <div class="metric-card">
+                        <div class="metric-header">
+                            <span class="material-icons">trending_down</span>
+                            <h4>Gastado</h4>
+                        </div>
+                        <p id="gastoMensual">$0.00</p>
+                    </div>
+
+                    <div class="metric-card">
+                        <div class="metric-header">
+                            <span class="material-icons">account_balance_wallet</span>
+                            <h4>Disponible</h4>
+                        </div>
+                        <p id="saldoRestante">$0.00</p>
+                    </div>
+
+                    <div class="metric-card">
+                        <div class="metric-header">
+                            <span class="material-icons">pie_chart</span>
+                            <h4>Utilizado</h4>
+                        </div>
+                        <p id="porcentajeGastado">0%</p>
+                    </div>
+                </div>
+
+                <div class="progress-container">
+                    <div class="progress-info">
+                        <span>Progreso del mes</span>
+                        <span id="progressLabel">0 de $0.00</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress" id="progressGastos"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Sección de Historial -->
+    <div id="historySection" class="hidden">
+        <section class="history-controls">
+            <div class="history-navigation">
+                <button id="prevDate" class="nav-arrow">
+                    <span class="material-icons">chevron_left</span>
+                </button>
+                <div class="date-selector">
+                    <button id="currentDate" class="date-button"></button>
+                    <input type="date" id="historyDate">
+                </div>
+                <button id="nextDate" class="nav-arrow">
+                    <span class="material-icons">chevron_right</span>
+                </button>
+            </div>
+        </section>
+
+        <section class="history-details">
+            <div class="table-container">
+                <table id="historyTable">
+                    <thead>
+                        <tr>
+                            <th>Descripción</th>
+                            <th>Categoría</th>
+                            <th>Monto</th>
+                        </tr>
+                    </thead>
+                    <tbody id="historyTableBody"></tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+
+    <!-- Sección de Presupuestos -->
+    <div id="budgetSection" class="hidden">
+        <section class="budget-section">
+            <h2>Configurar Presupuestos</h2>
+            <form id="budgetForm" class="budget-form">
+                <div class="form-field">
+                    <label>Presupuesto Mensual Total</label>
+                    <div class="input-with-icon">
+                        <span class="currency-symbol">Bs</span>
+                        <input type="number" id="presupuestoTotal" placeholder="0.00" step="0.01" min="0" required>
+                    </div>
+                </div>
+                <div id="categoryBudgets" class="category-budgets">
+                    <!-- Los presupuestos por categoría se cargarán dinámicamente -->
+                </div>
+                <button type="submit" class="btn-primary">
+                    <span class="material-icons">save</span> Guardar Presupuestos
+                </button>
+            </form>
+        </section>
+    </div>
+
+    <noscript>
+        <div class="error-message">
+            Esta aplicación requiere JavaScript para funcionar. Por favor, habilítalo en tu navegador.
+        </div>
+    </noscript>
+
+    <script src="script.js" defer></script>
+</body>
+</html> 
